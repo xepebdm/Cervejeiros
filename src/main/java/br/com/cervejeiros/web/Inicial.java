@@ -1,50 +1,37 @@
 package br.com.cervejeiros.web;
 
-import java.io.IOException;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import br.com.cervejeiros.model.bean.ForumCervejasBean;
-import br.com.cervejeiros.model.bean.ForumEventosBean;
-import br.com.cervejeiros.model.bean.ForumLancesBean;
-import br.com.cervejeiros.model.dao.ForumCervejasDao;
-import br.com.cervejeiros.model.dao.ForumEventosDao;
 import br.com.cervejeiros.model.dao.ForumLancesDao;
 
-@WebServlet(urlPatterns = "/")
-public class Inicial extends HttpServlet{
+@Controller
+public class Inicial {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		EntityManager em = (EntityManager) Persistence.createEntityManagerFactory("forumCervejasBean");
-		ForumCervejasDao forumCervejasDao = new ForumCervejasDao(em);
-		ForumLancesDao forumLancesDao = new ForumLancesDao(em);
-		ForumEventosDao forumEventosDao = new ForumEventosDao(em);
+	
+	@Autowired
+	private ForumLancesDao forumLancesDao;
+	
+	@RequestMapping("/")
+	private ModelAndView index() { 
 		
-		List<ForumEventosBean> listaEventos = forumEventosDao.lista();
-		List<ForumCervejasBean> listaCervejas = forumCervejasDao.lista();
-		List<ForumLancesBean> listaLances = forumLancesDao.lista();
+		ModelAndView modelAndView = new ModelAndView("inicial");
+		modelAndView.addObject("lista", forumLancesDao.getLances());
 		
-		req.setAttribute("listaEventos", listaEventos);
-		req.setAttribute("listaCervejas", listaCervejas);
-		req.setAttribute("listaLances", listaLances);
+		return modelAndView;
 		
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/inicial.jsp");
-		dispatcher.forward(req, resp);
 	
 	}
+	
+//	@RequestMapping("/")
+//	public String index() {
+//		System.out.println("Entrando na home no casa de código");
+//		return "inicial";
+//	}
 	
 }

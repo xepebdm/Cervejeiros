@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import br.com.cervejeiros.model.bean.ForumEventosBean;
@@ -15,13 +17,11 @@ import br.com.cervejeiros.model.bean.ForumEventosBean;
  */
 public class ForumEventosDao {
 
-	private EntityManager em;
 	private Query query;
 	private List<ForumEventosBean> listaEventos;
+	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("cervejeiros");
+	private EntityManager em = emf.createEntityManager();
 	
-	public ForumEventosDao(EntityManager em) {
-		this.em = em;
-	}
 	
 	public void adiciona(ForumEventosBean forum) {
 		em.persist(forum);

@@ -1,10 +1,10 @@
 package br.com.cervejeiros.model.bean;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  * Classe que representa a tabela FORUM_LANCES_MSG
@@ -12,22 +12,59 @@ import javax.persistence.Id;
  *
  */
 @Entity(name = "FORUM_LANCES_MSG")
-public class ForumLancesMsgBean {
+public class ForumLancesMsgBean implements ForumMsg{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-	
-	@Column(name = "TEXTO")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	private String texto;
-	
-	@Column(name = "PESSOA")
-	private int pessoa;
-	
-	@Column(name = "FORUM_LANCES_ID")
-	private int forumLancesId;
-	
-	@Column(name = "CANCELADO")
 	private boolean cancelado;
+	
+	@ManyToOne
+	private PessoaBean pessoa;
+	
+	@ManyToOne
+	private ForumLancesBean forum;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getTexto() {
+		return texto;
+	}
+
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
+
+	public boolean isCancelado() {
+		return cancelado;
+	}
+
+	public void setCancelado(boolean cancelado) {
+		this.cancelado = cancelado;
+	}
+
+	public PessoaBean getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(PessoaBean pessoa) {
+		this.pessoa = pessoa;
+	}
+
+	public ForumLancesBean getForum() {
+		return forum;
+	}
+
+	public void setForum(ForumLancesBean forum) {
+		this.forum = forum;
+	}
+	
+	
 }

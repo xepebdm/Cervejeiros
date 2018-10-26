@@ -1,10 +1,12 @@
 package br.com.cervejeiros.model.dao;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.cervejeiros.model.bean.ForumLancesBean;
 
@@ -15,34 +17,24 @@ import br.com.cervejeiros.model.bean.ForumLancesBean;
  *
  */
 
+@Repository
+@Transactional
 public class ForumLancesDao {
 
+	@PersistenceContext
 	private EntityManager em;
-	private List<ForumLancesBean> forumLista;
-	private Query query;
-
-	public ForumLancesDao(EntityManager em) {
-		this.em = em;
-	}
 
 	public void adiciona(ForumLancesBean forum) {
 		em.persist(forum);
 	}
 
-	public void atualiza(ForumLancesBean forum) {
-		em.merge(forum);
+	public void atualiza(ForumLancesBean forum, int id) {
+		ForumLancesBean otherForum = forum;
+		otherForum.setId(id);
+		em.persist(otherForum);
 	}
 
-	public List<ForumLancesBean> lista() {
-		String listaConsulta = "select * from FORUM_LANCES AS FORUM WHERE FORUM.CANCELADO = 0";
-		query.setMaxResults(5);
-		
-		try {
-			query = em.createQuery(listaConsulta);
-			forumLista = query.getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Collections.unmodifiableList(forumLista);
+	public List<ForumLancesBean> getLances() {
+		return em.createQuery("select f from ForumLances f", ForumLancesBean.class).getResultList();
 	}
 }

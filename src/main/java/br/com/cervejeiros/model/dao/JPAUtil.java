@@ -1,19 +1,15 @@
-package br.com.cervejeiros.teste;
+package br.com.cervejeiros.model.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class Teste {
-
-	public static void main(String[] args) {
-
+public class JPAUtil {
+	
+	
+	public EntityManager getConexao() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cervejeiros");
-		EntityManager em = emf.createEntityManager();
-		
-		em.close();
-		
-		emf.close();
+		return emf.createEntityManager();		
 	}
 
 }

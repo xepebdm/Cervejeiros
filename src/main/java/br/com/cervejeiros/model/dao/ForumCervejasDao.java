@@ -4,7 +4,9 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import br.com.cervejeiros.model.bean.ForumCervejasBean;
@@ -18,12 +20,11 @@ import br.com.cervejeiros.model.bean.ForumCervejasBean;
 
 public class ForumCervejasDao {
 	private List<ForumCervejasBean> forumCervejas;
-	private EntityManager em;
 	private Query query;
+	
+	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("cervejeiros");
+	private EntityManager em = emf.createEntityManager();
 
-	public ForumCervejasDao(EntityManager em) {
-		this.em = em;
-	}
 
 	public void adiciona(ForumCervejasBean forum) {
 		em.persist(forum);
